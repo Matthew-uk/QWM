@@ -18,7 +18,7 @@ const drugs = [
 ];
 
 export default function DrugInvestmentSlider() {
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<typeof Swiper | any>(null);
 
   return (
     <section className="py-20 bg-blue-50">
@@ -41,7 +41,7 @@ export default function DrugInvestmentSlider() {
                 slidesPerView: 3,
               },
             }}
-            onSwiper={(swiper) => {
+            onSwiper={(swiper: any) => {
               swiperRef.current = swiper;
             }}
             className="pb-12"
