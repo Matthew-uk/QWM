@@ -52,7 +52,7 @@ export function SignupForm({
         firstName,
         lastName,
         phoneNumber,
-        referralCode,
+        referrer: referralCode,
         email,
         password,
       });
