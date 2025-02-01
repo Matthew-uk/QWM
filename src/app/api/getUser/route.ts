@@ -33,6 +33,7 @@ export const GET = async () => {
     // Return user and documents
     return NextResponse.json({
       documents: response,
+      document: response.documents[0],
       //   originalDocs: result.documents,
     });
   } catch (error: any) {
