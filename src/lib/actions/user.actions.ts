@@ -30,12 +30,7 @@ export const login = async (email: string, password: string) => {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
     if (!session) {
-      return NextResponse.json(
-        {
-          error: 'Failed to login user because session not found',
-        },
-        { status: 401 },
-      );
+      throw new Error('No session found!');
     }
 
     // Store session ID (not secret) in cookies

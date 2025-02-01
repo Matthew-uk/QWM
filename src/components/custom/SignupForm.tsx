@@ -19,6 +19,7 @@ import { Label } from '@/components/ui/label';
 import { FaGoogle } from 'react-icons/fa';
 import Logo from './Logo';
 import { createAccount } from '@/lib/actions/user.actions';
+import { toast } from 'react-toastify';
 
 type SignupFormInputs = {
   firstName: string;
@@ -57,9 +58,9 @@ export function SignupForm({
         password,
       });
       console.log(result);
-      router.push('/login');
+      //   router.push('/login');
     } catch (error: any) {
-      console.log(error.message || 'Error occured while creating account');
+      toast.error(error.message || 'Error occured while creating account');
     } finally {
       setLoading(false);
     }
