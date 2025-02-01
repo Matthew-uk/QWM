@@ -7,7 +7,6 @@ import axios from 'axios';
 import { useEffect, useState, type ReactNode } from 'react';
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
-  //   const [user, setUser] = useState<any>(null);
   const [error, setError] = useState('');
   const {
     loading,
@@ -19,28 +18,58 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     setReferralCode,
     updateBalance,
   } = useUserStore();
+
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await axios.get('/api/getUser');
-      const data: UserInterface = await response.data.documents[0];
+      try {
+        const response = await axios.get<{
+          success: boolean;
+          data: {
+            documents: UserInterface[];
+            userId: string;
+          };
+        }>('/api/getUser');
 
-      if (data) {
-        console.log(data);
-        setEmail(data.email);
-        setId(data.userId);
-        setName(`${data.firstName} ${data.lastName}`);
-        setPhoneNumber(data.phoneNumber);
-        setReferralCode(data.referralCode);
-        updateBalance(data.balance);
-        setLoading(false); // console.log(data);
-      } else {
-        setError('Failed to get User Data!');
+        if (!response.data.success) {
+          throw new Error('Failed to fetch user data');
+        }
+
+        const userData = response.data.data.documents[0];
+
+        if (!userData) {
+          throw new Error('User data not found');
+        }
+
+        // Update store with user data
+        setEmail(userData.email);
+        setId(userData.userId);
+        setName(`${userData.firstName} ${userData.lastName}`);
+        setPhoneNumber(userData.phoneNumber);
+        setReferralCode(userData.referralCode);
+        updateBalance(userData.balance);
+      } catch (error) {
+        console.error('User fetch error:', error);
+        setError(
+          error instanceof Error ? error.message : 'Failed to get user data',
+        );
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [
+    setEmail,
+    setId,
+    setLoading,
+    setName,
+    setPhoneNumber,
+    setReferralCode,
+    updateBalance,
+  ]);
+
   if (loading) return <Loader />;
+  if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
 
   return (
     <div className="min-h-screen bg-gray-100 pb-16">
