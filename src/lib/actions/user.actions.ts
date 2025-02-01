@@ -29,6 +29,14 @@ export const login = async (email: string, password: string) => {
   try {
     const { account } = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
+    if (!session) {
+      return NextResponse.json(
+        {
+          error: 'Failed to login user because session not found',
+        },
+        { status: 401 },
+      );
+    }
 
     // Store session ID (not secret) in cookies
     (await cookies()).set('appwrite-session', session.secret, {
@@ -42,11 +50,7 @@ export const login = async (email: string, password: string) => {
     NextResponse.json(session);
     return { session };
   } catch (error) {
-    console.error('Failed to login user:', error);
-    return NextResponse.json(
-      { error: 'Failed to login user' },
-      { status: 401 },
-    );
+    handleError(error, 'Failed to login user');
   }
 };
 

@@ -44,10 +44,10 @@ export function LoginForm({
     const { email, password } = data;
     try {
       setLoading(true);
-      const result = await login(email, password);
-      //   Cookies.set('appwrite-session', result?.session.$id || '');
+      const result: any = await login(email, password);
+      Cookies.set('appwrite-session', result.session.secret || '');
       console.log(result);
-      router.push('/dashboard');
+      //   router.push('/dashboard');
     } catch (error: any) {
       setError(error.message || 'Error Logging in');
       toast.error(error.message || 'Error Logging in');
