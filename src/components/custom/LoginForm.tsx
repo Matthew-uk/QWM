@@ -20,6 +20,7 @@ import { Label } from '@/components/ui/label';
 import { FaGoogle } from 'react-icons/fa';
 import Logo from './Logo';
 import { login } from '@/lib/actions/user.actions';
+import { toast } from 'react-toastify';
 
 type LoginFormInputs = {
   email: string;
@@ -49,7 +50,7 @@ export function LoginForm({
       router.push('/dashboard');
     } catch (error: any) {
       setError(error.message || 'Error Logging in');
-      //   toast.error(error.message || 'Error Logging in');
+      toast.error(error.message || 'Error Logging in');
     } finally {
       setLoading(false);
     }
