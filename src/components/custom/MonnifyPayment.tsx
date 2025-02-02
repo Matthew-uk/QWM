@@ -2,6 +2,7 @@
 import { useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { MonnifyConfig, MonnifyResponse } from '@/types/monnify';
+import { useUserStore } from '@/store/store';
 
 interface MonnifyPaymentProps {
   amount: number;
@@ -16,6 +17,7 @@ const MonnifyPayment = ({
   onSuccess,
   onClose,
 }: MonnifyPaymentProps) => {
+  const { name, phoneNumber } = useUserStore();
   const initializePayment = useCallback(() => {
     const transactionReference = uuidv4();
 
@@ -23,12 +25,13 @@ const MonnifyPayment = ({
       amount,
       currency: 'NGN',
       reference: transactionReference,
-      customerFullName: 'John Doe',
+      customerFullName: name,
       customerEmail: email,
-      customerMobileNumber: '08123456789',
+      customerMobileNumber: phoneNumber,
       apiKey: process.env.NEXT_PUBLIC_MONNIFY_API_KEY!,
-      contractCode: process.env.NEXT_PUBLIC_MONNIFY_CONTRACT_CODE!,
-      paymentDescription: 'Product Purchase',
+      contractCode:
+        process.env.NEXT_PUBLIC_MONNIFY_CONTRACT_CODE! || '6585527930',
+      paymentDescription: 'Deposit',
       isTestMode: process.env.NODE_ENV === 'development',
       metadata: {},
       paymentMethods: ['CARD', 'ACCOUNT_TRANSFER'],
