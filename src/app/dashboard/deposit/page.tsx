@@ -68,6 +68,7 @@ export default function DepositPage() {
           className: 'bg-green-500 text-white',
         },
       );
+      toast.success('Refresh to see update balance');
       router.refresh();
       router.push('/dashboard');
     } catch (error) {
