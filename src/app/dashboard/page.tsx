@@ -117,9 +117,12 @@ const DashboardHome = () => {
       </Card>
 
       <div className="grid grid-cols-2 gap-4">
-        <Button className="h-20">
-          <FaArrowDown className="mr-2" /> Deposit
-        </Button>
+        <Link href={'/dashboard/deposit'} className="w-full">
+          <Button className="h-20 w-full">
+            <FaArrowDown className="mr-2" /> Deposit
+          </Button>
+        </Link>
+
         <Button variant="outline" className="h-20">
           <FaArrowUp className="mr-2" /> Withdraw
         </Button>

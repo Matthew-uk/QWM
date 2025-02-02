@@ -42,7 +42,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
         // Update store with user data
         setEmail(userData.email);
-        setId(userData.userId);
+        setId(userData.accountId);
         setName(`${userData.firstName} ${userData.lastName}`);
         setPhoneNumber(userData.phoneNumber);
         setReferralCode(userData.referralCode);

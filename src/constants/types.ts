@@ -6,5 +6,6 @@ export interface UserInterface {
   phoneNumber: string;
   referralCode: string;
   userId: string;
+  accountId: string;
   loading: boolean;
 }

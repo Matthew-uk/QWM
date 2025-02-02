@@ -1,6 +1,7 @@
 'use server';
 import Cookies from 'js-cookie';
 import { ID, Query } from 'node-appwrite';
+import { type Models } from 'appwrite';
 import { createAdminClient, createSessionClient } from '../appwrite';
 import { appwriteConfig } from '../appwrite/config';
 import { generateReferralCode, parseStringify } from '../utils';
@@ -143,6 +144,51 @@ export const getUser = async () => {
 //     handleError(error, 'Error getting User');
 //   }
 // };
+
+interface UserDocument extends Models.Document {
+  firstName: string;
+  lastName: string;
+  balance: number;
+  email: string;
+  phoneNumber: string;
+  referralCode: string;
+}
+
+export const updateUserBalance = async (
+  userId: string,
+  amount: number,
+): Promise<UserDocument> => {
+  const { databases } = await createSessionClient();
+  try {
+    console.log(`Updating balance for user: ${userId} with amount: ${amount}`);
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      [Query.equal('accountId', userId)],
+    );
+    console.log(response);
+
+    if (response.documents.length === 0) {
+      throw new Error('User document not found');
+    }
+
+    const userDoc = response.documents[0] as UserDocument;
+    const newBalance = userDoc.balance + amount;
+
+    // Update the balance
+    const updatedDoc = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      userDoc.$id,
+      { balance: newBalance },
+    );
+
+    return updatedDoc as UserDocument;
+  } catch (error) {
+    console.error('Balance update failed:', error);
+    throw error;
+  }
+};
 
 export const logout = async () => {
   try {
