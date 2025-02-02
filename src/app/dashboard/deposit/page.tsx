@@ -49,12 +49,6 @@ export default function DepositPage() {
 
   const handlePaymentSuccess = async (response: MonnifyResponse) => {
     try {
-      // Get actual user ID from your auth system
-      const userId = id; // Replace with dynamic user ID
-
-      // Convert amount from kobo to naira if needed
-      const amountInNaira = response.amountPaid;
-
       // Update balance
       const updatedUser = await updateUserBalance(id, amount);
 
