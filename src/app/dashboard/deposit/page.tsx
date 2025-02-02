@@ -63,7 +63,10 @@ export default function DepositPage() {
 
       // Show success notification
       toast.success(
-        `₦${amountInNaira} deposited successfully! New balance: ₦${updatedUser.balance}`,
+        `₦${amount.toLocaleString()} deposited successfully! New balance: ₦${updatedUser.balance.toLocaleString()}`,
+        {
+          className: 'bg-green-500 text-white',
+        },
       );
       router.refresh();
       router.push('/dashboard');
