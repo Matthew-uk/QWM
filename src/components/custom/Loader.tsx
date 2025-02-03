@@ -23,9 +23,9 @@ const Loader: React.FC = () => {
               d="M12 8v4m0 4h.01m-6.938 4h13.856c1.054 0 1.918-.816 1.995-1.85L21 17V7c0-1.054-.816-1.918-1.85-1.995L19 5H5c-1.054 0-1.918.816-1.995 1.85L3 7v10c0 1.054.816 1.918 1.85 1.995L5 19z"
             />
           </svg> */}
-          <p className="w-6 h-6 flex justify-center items-center p-4 text-center text-2xl font-extrabold border-4 border-blue-500 rounded-full text-blue-500 animate-spin-slow">
+          <span className="flex justify-center items-center text-center text-2xl font-extrabold text-blue-500 animate-spin-slow">
             ₦
-          </p>
+          </span>
         </div>
       </div>
     </div>
