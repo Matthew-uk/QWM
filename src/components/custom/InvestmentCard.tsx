@@ -41,7 +41,7 @@ const InvestmentCard: React.FC<InvestmentCardProp> = ({ pkg, index }) => {
           variant="secondary"
           className="text-sm text-white !bg-green-500 w-max"
         >
-          ₦{(pkg.dailyIncome * 2).toLocaleString()} Daily Income
+          ₦{pkg.dailyIncome.toLocaleString()} Daily Income
         </Badge>
       </CardHeader>
       <CardContent>

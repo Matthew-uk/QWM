@@ -13,7 +13,7 @@ const packages = [
   {
     name: 'Paracetamol',
     price: 3000,
-    dailyIncome: 600,
+    dailyIncome: 1200,
     duration: 20,
     totalIncome: 24000,
     get features() {
@@ -29,7 +29,7 @@ const packages = [
   {
     name: 'NemelCipro',
     price: 5000,
-    dailyIncome: 1000,
+    dailyIncome: 2000,
     duration: 20,
     totalIncome: 40000,
     get features() {
@@ -45,7 +45,7 @@ const packages = [
   {
     name: 'Avrocid',
     price: 10000,
-    dailyIncome: 2000,
+    dailyIncome: 4000,
     duration: 20,
     totalIncome: 80000,
     get features() {
@@ -61,7 +61,7 @@ const packages = [
   {
     name: 'Antacid',
     price: 20000,
-    dailyIncome: 4000,
+    dailyIncome: 8000,
     duration: 20,
     totalIncome: 160000,
     get features() {
@@ -77,7 +77,7 @@ const packages = [
   {
     name: 'Imdur',
     price: 50000,
-    dailyIncome: 10000,
+    dailyIncome: 20000,
     duration: 20,
     totalIncome: 400000,
     get features() {
@@ -93,7 +93,7 @@ const packages = [
   {
     name: 'UREA CREAM',
     price: 100000,
-    dailyIncome: 20000,
+    dailyIncome: 40000,
     duration: 20,
     totalIncome: 800000,
     get features() {
@@ -109,7 +109,7 @@ const packages = [
   {
     name: 'Nosclav-625',
     price: 200000,
-    dailyIncome: 40000,
+    dailyIncome: 80000,
     duration: 20,
     totalIncome: 1600000,
     get features() {
@@ -125,7 +125,7 @@ const packages = [
   {
     name: 'ADDYZOA',
     price: 300000,
-    dailyIncome: 60000,
+    dailyIncome: 120000,
     duration: 20,
     totalIncome: 2400000,
     get features() {
@@ -141,7 +141,7 @@ const packages = [
   {
     name: 'MANIX',
     price: 400000,
-    dailyIncome: 80000,
+    dailyIncome: 160000,
     duration: 20,
     totalIncome: 3200000,
     get features() {
@@ -157,7 +157,7 @@ const packages = [
   {
     name: 'SPERM BOOM',
     price: 500000,
-    dailyIncome: 100000,
+    dailyIncome: 200000,
     duration: 20,
     totalIncome: 4000000,
     get features() {
