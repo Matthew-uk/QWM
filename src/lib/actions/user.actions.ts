@@ -190,6 +190,39 @@ export const updateUserBalance = async (
   }
 };
 
+export const investment = async (userId: string, amount: number) => {
+  const { databases } = await createSessionClient();
+  try {
+    console.log(`Updating balance for user: ${userId} with amount: ${amount}`);
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      [Query.equal('accountId', userId)],
+    );
+    console.log(response);
+
+    if (response.documents.length === 0) {
+      throw new Error('User document not found');
+    }
+
+    const userDoc = response.documents[0] as UserDocument;
+    //   const newBalance = userDoc.balance + amount;
+
+    // Update the balance
+    const updatedDoc = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      userDoc.$id,
+      { dailyInvestment: amount, investmentDuration: 20 },
+    );
+
+    return updatedDoc as UserDocument;
+  } catch (error) {
+    console.error('Balance update failed:', error);
+    throw error;
+  }
+};
+
 export const logout = async () => {
   try {
     const sessionCookie = (await cookies()).get('appwrite-session');

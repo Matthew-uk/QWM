@@ -60,6 +60,10 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
     },
+    fontFamily: {
+      poppins: ['var(--font-poppins)'],
+      montserrat: ['var(--font-montserrat)'],
+    },
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;

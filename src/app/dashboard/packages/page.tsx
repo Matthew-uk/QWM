@@ -1,6 +1,8 @@
+'use client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useUserStore } from '@/store/store';
 
 const packages = [
   {
@@ -86,55 +88,66 @@ const packages = [
 ];
 
 export default function PackagesPage() {
+  const { dailyInvestment } = useUserStore();
+
+  // Filter packages based on dailyInvestment
+  const filteredPackages = packages.filter(
+    (pkg) => pkg.dailyIncome === dailyInvestment,
+  );
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Investment Packages</h1>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {packages.map((pkg, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <CardTitle>{pkg.name}</CardTitle>
-              <Badge
-                variant="secondary"
-                className="text-sm text-white !bg-green-500 w-max"
-              >
-                ₦{pkg.dailyIncome.toLocaleString()} Income Every 12 Hours (₦
-                {(pkg.dailyIncome * 2).toLocaleString()} Daily Income)
-              </Badge>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold mb-2">
-                ₦{pkg.price.toLocaleString()}
-              </div>
-              <div className="text-sm text-gray-500 mb-4">
-                {pkg.duration} days
-              </div>
-              <ul className="space-y-2 mb-4">
-                {pkg.features.map((feature, i) => (
-                  <li key={i} className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2 text-green-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      ></path>
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <Button className="w-full">Invest Now</Button>
-            </CardContent>
-          </Card>
-        ))}
+        {filteredPackages.length > 0 ? (
+          filteredPackages.map((pkg, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle>{pkg.name}</CardTitle>
+                <Badge
+                  variant="secondary"
+                  className="text-sm text-white !bg-green-500 w-max"
+                >
+                  ₦{pkg.dailyIncome.toLocaleString()} Income Every 12 Hours (₦
+                  {(pkg.dailyIncome * 2).toLocaleString()} Daily Income)
+                </Badge>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold mb-2">
+                  ₦{pkg.price.toLocaleString()}
+                </div>
+                <div className="text-sm text-gray-500 mb-4">
+                  {pkg.duration} days
+                </div>
+                <ul className="space-y-2 mb-4">
+                  {pkg.features.map((feature, i) => (
+                    <li key={i} className="flex items-center">
+                      <svg
+                        className="w-4 h-4 mr-2 text-green-500"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M5 13l4 4L19 7"
+                        ></path>
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button className="w-full">Invest Now</Button>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <p>No packages match your daily investment criteria.</p>
+        )}
       </div>
     </div>
   );

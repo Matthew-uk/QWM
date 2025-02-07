@@ -10,11 +10,17 @@ import 'swiper/css/pagination';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
 const drugs = [
-  { name: 'Aspirin', image: '/assets/aspirin.png' },
-  { name: 'Ibuprofen', image: '/assets/ibuprofen.jpeg' },
   { name: 'Paracetamol', image: '/assets/paracetamol.png' },
-  { name: 'Amoxicillin', image: '/assets/Amoxicillin.jpeg' },
-  { name: 'Omeprazole', image: '/assets/omeprazole.webp' },
+  //   { name: 'Aspirin', image: '/assets/aspirin.png' },
+  { name: 'NemelCipro', image: '/assets/Nemel-Cipro.jpg' },
+  { name: 'Avrocid', image: '/assets/avrocid.jpeg' },
+  { name: 'Antacid', image: '/assets/antacid.jpeg' },
+  { name: 'Imdur', image: '/assets/imdur.webp' },
+  { name: 'UREA CREAM', image: '/assets/urea-cream.jpeg' },
+  { name: 'Nosclav-625', image: '/assets/nosclav-625.jpeg' },
+  { name: 'ADDYZOA', image: '/assets/ADDYZOA.jpeg' },
+  { name: 'MANIX', image: '/assets/manix.webp' },
+  { name: 'SPERM BOOM', image: '/assets/sperm-boom.jpeg' },
 ];
 
 export default function DrugInvestmentSlider() {

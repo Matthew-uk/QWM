@@ -4,6 +4,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './globals.css';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -56,6 +57,10 @@ export default function RootLayout({
           showAtBottom={false}
         />
         {children}
+        <Script
+          src="https://checkout.flutterwave.com/v3.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

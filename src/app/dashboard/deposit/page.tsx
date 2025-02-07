@@ -1,7 +1,14 @@
 'use client';
+
 import { useState } from 'react';
-import MonnifyPayment from '@/components/custom/MonnifyPayment';
-import { MonnifyResponse } from '@/types/monnify';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+// import { Loader2 } from 'lucide-react';
+import { useUserStore } from '@/store/store';
+import { updateUserBalance } from '@/lib/actions/user.actions';
+import FlutterwaveButton from '@/components/custom/FlutterwaveButton';
+
 import {
   Card,
   CardContent,
@@ -11,22 +18,18 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { useUserStore } from '@/store/store';
-import { updateUserBalance } from '@/lib/actions/user.actions';
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 
 type DepositInputs = {
   amount: number;
 };
 
 export default function DepositPage() {
-  const { email, id } = useUserStore();
+  const { email, id, name } = useUserStore();
   const router = useRouter();
   const [showPayment, setShowPayment] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -38,31 +41,27 @@ export default function DepositPage() {
   });
 
   const amount = watch('amount');
-  const [isProcessing, setIsProcessing] = useState(false);
 
-  const onSubmit: SubmitHandler<DepositInputs> = async (data) => {
+  const onSubmit: SubmitHandler<DepositInputs> = async () => {
     await trigger();
     if (isValid) {
       setShowPayment(true);
     }
   };
 
-  const handlePaymentSuccess = async (response: MonnifyResponse) => {
+  const handlePaymentSuccess = async (response: any) => {
     try {
-      // Update balance
+      console.log('Payment successful:', response);
+
       const updatedUser = await updateUserBalance(id, amount);
 
-      console.log('Balance updated:', updatedUser.balance);
-      setShowPayment(false);
-
-      // Show success notification
       toast.success(
         `₦${amount.toLocaleString()} deposited successfully! New balance: ₦${updatedUser.balance.toLocaleString()}`,
-        {
-          className: 'bg-green-500 text-white',
-        },
+        { className: 'bg-green-500 text-white' },
       );
-      toast.success('Refresh to see update balance');
+      toast.success('Refresh to see updated balance');
+
+      setShowPayment(false);
       router.refresh();
       router.push('/dashboard');
     } catch (error) {
@@ -71,11 +70,6 @@ export default function DepositPage() {
     } finally {
       setIsProcessing(false);
     }
-
-    // console.log('Payment successful:', response);
-    // setShowPayment(false);
-    // setIsProcessing(false);
-    // Handle successful payment here (e.g., update balance)
   };
 
   const handlePaymentClose = () => {
@@ -86,14 +80,15 @@ export default function DepositPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-4 space-y-6">
-      <div className="space-y-2 text-center">
+      <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
           Fund Your Account
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
           Securely deposit funds using{' '}
-          <span className="text-primary font-bold cursor-pointer">Monnify</span>{' '}
-          payment gateway
+          <span className="text-primary font-bold cursor-pointer">
+            Flutterwave
+          </span>
         </p>
       </div>
 
@@ -136,7 +131,7 @@ export default function DepositPage() {
             </div>
 
             <div className="flex justify-end">
-              <Button
+              {/* <Button
                 type="submit"
                 size="lg"
                 className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
@@ -151,25 +146,24 @@ export default function DepositPage() {
                 ) : (
                   'Continue to Payment'
                 )}
-              </Button>
+              </Button> */}
+              <FlutterwaveButton
+                name={name}
+                email={email}
+                amount={amount}
+                userId={id}
+              />
             </div>
           </form>
         </CardContent>
       </Card>
 
-      {isProcessing && (
-        <MonnifyPayment
-          amount={amount}
-          email={email}
-          onSuccess={handlePaymentSuccess}
-          onClose={handlePaymentClose}
-        />
-      )}
-
       <div className="text-center text-sm text-gray-500 dark:text-gray-400">
         <p>
           Secure transactions powered by{' '}
-          <span className="text-primary font-bold cursor-pointer">Monnify</span>
+          <span className="text-primary font-bold cursor-pointer">
+            Flutterwave
+          </span>
         </p>
         <p className="mt-1">All transactions are encrypted and secure</p>
       </div>

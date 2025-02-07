@@ -19,12 +19,14 @@ export default function Hero() {
             </h1>
             <p className="text-xl mb-8 text-gray-700 leading-relaxed">
               Quick Wealth Market offers unparalleled opportunities in the
-              thriving health and pharmaceutical sector. Start your journey to
-              financial growth today.
+              thriving health and pharmaceutical sector with a record breaking
+              <span className="text-green-500 font-medium"> 20%</span> Daily
+              Return on Investment(DROI). Start your journey to financial growth
+              today.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
               <Link
-                href="/login"
+                href="/register"
                 className="inline-flex items-center justify-center bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition duration-300 text-lg font-semibold"
               >
                 Create Account and Start Investing

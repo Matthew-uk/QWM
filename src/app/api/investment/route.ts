@@ -26,13 +26,15 @@ export async function GET() {
       const dailyInvestment = user.dailyInvestment || 0;
       const currentBalance = user.balance || 0;
       const newBalance = currentBalance + dailyInvestment;
+      const currentInvestmentDuration = user.investmentDuration;
+      const newDuration = currentInvestmentDuration - 1;
 
       // Update the user's balance
       const verifyUpdate = await databases.updateDocument(
         appwriteConfig.databaseId,
         appwriteConfig.usersCollectionId,
         user.$id,
-        { balance: newBalance },
+        { balance: newBalance, investmentDuration: newDuration },
       );
       console.log(verifyUpdate);
     }

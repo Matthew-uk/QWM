@@ -4,10 +4,13 @@ import Loader from '@/components/custom/Loader';
 import { UserInterface } from '@/constants/types';
 import { useUserStore } from '@/store/store';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
+import { toast } from 'react-toastify';
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState('');
+  const router = useRouter();
   const {
     loading,
     setEmail,
@@ -17,6 +20,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     setPhoneNumber,
     setReferralCode,
     updateBalance,
+    setDailyInvestment,
   } = useUserStore();
 
   useEffect(() => {
@@ -47,8 +51,11 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         setPhoneNumber(userData.phoneNumber);
         setReferralCode(userData.referralCode);
         updateBalance(userData.balance);
-      } catch (error) {
+        setDailyInvestment(userData.dailyInvestment);
+      } catch (error: any) {
         console.error('User fetch error:', error);
+        toast.error('Session expired, login again');
+        router.push('/login');
         setError(
           error instanceof Error ? error.message : 'Failed to get user data',
         );

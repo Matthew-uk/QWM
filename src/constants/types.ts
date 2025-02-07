@@ -7,5 +7,6 @@ export interface UserInterface {
   referralCode: string;
   userId: string;
   accountId: string;
+  dailyInvestment: number;
   loading: boolean;
 }
