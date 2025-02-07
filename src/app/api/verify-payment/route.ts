@@ -1,8 +1,8 @@
-import { Flutterwave } from 'flutterwave-node-v3';
+import Flutterwave from 'flutterwave-node-v3';
 import { NextResponse } from 'next/server';
 
 const flw = new Flutterwave(
-  process.env.FLUTTERWAVE_PUBLIC_KEY!,
+  process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY!,
   process.env.FLUTTERWAVE_SECRET_KEY!,
 );
 
