@@ -27,7 +27,8 @@ export async function GET() {
       const currentBalance = user.balance || 0;
       const newBalance = currentBalance + dailyInvestment;
       const currentInvestmentDuration = user.investmentDuration;
-      const newDuration = currentInvestmentDuration - 1;
+      const newDuration = Math.max(0, currentInvestmentDuration - 1);
+      console.log(newDuration);
 
       // Update the user's balance
       const verifyUpdate = await databases.updateDocument(

@@ -168,7 +168,7 @@ const packages = [
 ];
 
 export default function PackagesPage() {
-  const { dailyInvestment } = useUserStore();
+  const { dailyInvestment, investmentDuration } = useUserStore();
   console.log(dailyInvestment);
 
   // Filter packages based on dailyInvestment
@@ -198,7 +198,8 @@ export default function PackagesPage() {
                   ₦{pkg.price.toLocaleString()}
                 </div>
                 <div className="text-sm text-gray-500 mb-4">
-                  {pkg.duration} days
+                  {investmentDuration} {investmentDuration > 1 ? 'days' : 'day'}{' '}
+                  left
                 </div>
                 <ul className="space-y-2 mb-4 font-medium">
                   {pkg.features.map((feature, i) => (

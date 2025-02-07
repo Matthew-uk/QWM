@@ -21,6 +21,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     setReferralCode,
     updateBalance,
     setDailyInvestment,
+    setInvestmentDuration,
   } = useUserStore();
 
   useEffect(() => {
@@ -52,6 +53,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         setReferralCode(userData.referralCode);
         updateBalance(userData.balance);
         setDailyInvestment(userData.dailyInvestment);
+        setInvestmentDuration(userData.investmentDuration);
       } catch (error: any) {
         console.error('User fetch error:', error);
         toast.error('Session expired, login again');

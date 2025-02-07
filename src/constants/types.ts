@@ -8,5 +8,6 @@ export interface UserInterface {
   userId: string;
   accountId: string;
   dailyInvestment: number;
+  investmentDuration: number;
   loading: boolean;
 }

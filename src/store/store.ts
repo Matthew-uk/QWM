@@ -9,6 +9,7 @@ export interface UserInterface {
   referralCode: string;
   loading: boolean;
   dailyInvestment: number;
+  investmentDuration: number;
   setName: (name: string) => void;
   setId: (id: string) => void;
   setEmail: (email: string) => void;
@@ -16,6 +17,7 @@ export interface UserInterface {
   setPhoneNumber: (phoneNumber: string) => void;
   setReferralCode: (referralCode: string) => void;
   setDailyInvestment: (dailyInvestment: number) => void;
+  setInvestmentDuration: (investmentDuration: number) => void;
   setLoading: (loading: boolean) => void;
   resetUser: () => void;
 }
@@ -57,6 +59,7 @@ export const useUserStore = create<UserInterface>((set) => ({
   phoneNumber: '',
   referralCode: '',
   dailyInvestment: 0,
+  investmentDuration: 0,
   loading: true,
   setName: (name) => set({ name }),
   setId: (id) => set({ id }),
@@ -65,6 +68,7 @@ export const useUserStore = create<UserInterface>((set) => ({
   updateBalance: (balance) => set({ balance }),
   setReferralCode: (referralCode) => set({ referralCode }),
   setDailyInvestment: (dailyInvestment) => set({ dailyInvestment }),
+  setInvestmentDuration: (investmentDuration) => set({ investmentDuration }),
   setLoading: (loading) => set({ loading }),
   resetUser: () =>
     set({
@@ -74,6 +78,7 @@ export const useUserStore = create<UserInterface>((set) => ({
       balance: 0,
       phoneNumber: '',
       dailyInvestment: 0,
+      investmentDuration: 0,
       loading: false,
     }),
 }));
