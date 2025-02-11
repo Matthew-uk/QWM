@@ -2,7 +2,12 @@
 import { BottomNav } from '@/components/custom/BottomNav';
 import Loader from '@/components/custom/Loader';
 import { UserInterface } from '@/constants/types';
+import { getWithdrawals } from '@/lib/actions/user.actions';
 import { useUserStore } from '@/store/store';
+import {
+  TransactionsInterface,
+  useTransactionsStore,
+} from '@/store/transaction';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
@@ -23,6 +28,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     setDailyInvestment,
     setInvestmentDuration,
   } = useUserStore();
+  const { setTransactions } = useTransactionsStore();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -54,6 +60,30 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
         updateBalance(userData.balance);
         setDailyInvestment(userData.dailyInvestment);
         setInvestmentDuration(userData.investmentDuration);
+
+        // Fetch withdrawals and map them correctly
+        const withdrawals = await getWithdrawals(userData.accountId);
+        console.log(withdrawals);
+
+        if (Array.isArray(withdrawals)) {
+          const mappedWithdrawals: TransactionsInterface[] | any[] =
+            withdrawals.map((doc) => ({
+              $collectionId: doc.$collectionId ?? '',
+              $createdAt: doc.$createdAt ?? '',
+              $databaseId: doc.$databaseId ?? '',
+              $id: doc.$id ?? '',
+              $permissions: doc.$permissions ?? [],
+              $updatedAt: doc.$updatedAt ?? '',
+              accountName: doc.accountName ?? '',
+              accountNumber: doc.accountNumber ?? 0,
+              amount: doc.amount ?? 0,
+              bankName: doc.bankName ?? '',
+              completed: doc.completed ?? false,
+              userId: doc.userId ?? '',
+            }));
+
+          setTransactions(mappedWithdrawals);
+        }
       } catch (error: any) {
         console.error('User fetch error:', error);
         toast.error('Session expired, login again');
@@ -75,6 +105,9 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
     setPhoneNumber,
     setReferralCode,
     updateBalance,
+    setDailyInvestment,
+    setInvestmentDuration,
+    setTransactions,
   ]);
 
   if (loading) return <Loader />;

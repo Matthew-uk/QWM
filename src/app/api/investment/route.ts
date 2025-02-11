@@ -27,17 +27,19 @@ export async function GET() {
       const currentBalance = user.balance || 0;
       const newBalance = currentBalance + dailyInvestment;
       const currentInvestmentDuration = user.investmentDuration;
-      const newDuration = Math.max(0, currentInvestmentDuration - 1);
-      console.log(newDuration);
+      if (currentInvestmentDuration > 0) {
+        const newDuration = Math.max(0, currentInvestmentDuration - 1);
+        console.log(newDuration);
 
-      // Update the user's balance
-      const verifyUpdate = await databases.updateDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.usersCollectionId,
-        user.$id,
-        { balance: newBalance, investmentDuration: newDuration },
-      );
-      console.log(verifyUpdate);
+        // Update the user's balance
+        const verifyUpdate = await databases.updateDocument(
+          appwriteConfig.databaseId,
+          appwriteConfig.usersCollectionId,
+          user.$id,
+          { balance: newBalance, investmentDuration: newDuration },
+        );
+        console.log(verifyUpdate);
+      }
     }
 
     return NextResponse.json(

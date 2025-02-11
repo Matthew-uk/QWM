@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useUserStore } from '@/store/store';
+import Link from 'next/link';
 
 const packages = [
   {
@@ -186,12 +187,20 @@ export default function PackagesPage() {
             <Card key={index}>
               <CardHeader>
                 <CardTitle>{pkg.name}</CardTitle>
-                <Badge
-                  variant="secondary"
-                  className="text-sm text-white !bg-green-500 w-max"
-                >
-                  ₦{pkg.dailyIncome.toLocaleString()} Daily Income
-                </Badge>
+                <div className="flex justify-between items-center">
+                  <Badge
+                    variant="secondary"
+                    className="text-sm text-white !bg-blue-500 w-max"
+                  >
+                    ₦{pkg.dailyIncome.toLocaleString()} Daily Income
+                  </Badge>
+                  <Badge
+                    variant="secondary"
+                    className="text-sm text-white !bg-green-500 w-max"
+                  >
+                    Active
+                  </Badge>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold mb-2">
@@ -222,12 +231,20 @@ export default function PackagesPage() {
                     </li>
                   ))}
                 </ul>
-                <Button className="w-full">Invest Now</Button>
+                <Button className="w-full" disabled>
+                  Investment Active
+                </Button>
               </CardContent>
             </Card>
           ))
         ) : (
-          <p>No packages match your daily investment criteria.</p>
+          <p>
+            Head over to{' '}
+            <Link href={'/dashboard'} className="text-blue-400 underline">
+              Home Page
+            </Link>{' '}
+            and invest to see investments.
+          </p>
         )}
       </div>
     </div>

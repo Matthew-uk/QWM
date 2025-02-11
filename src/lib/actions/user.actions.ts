@@ -8,6 +8,7 @@ import { generateReferralCode, parseStringify } from '../utils';
 import { cookies } from 'next/headers';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
+import { TransactionsInterface } from '@/store/transaction';
 
 const getUserByEmail = async (email: string) => {
   const { databases } = await createAdminClient();
@@ -190,7 +191,11 @@ export const updateUserBalance = async (
   }
 };
 
-export const investment = async (userId: string, amount: number) => {
+export const investment = async (
+  userId: string,
+  amount: number,
+  price: number,
+) => {
   const { databases } = await createSessionClient();
   try {
     console.log(`Updating balance for user: ${userId} with amount: ${amount}`);
@@ -206,14 +211,14 @@ export const investment = async (userId: string, amount: number) => {
     }
 
     const userDoc = response.documents[0] as UserDocument;
-    //   const newBalance = userDoc.balance + amount;
+    const newBalance = userDoc.balance - price;
 
     // Update the balance
     const updatedDoc = await databases.updateDocument(
       appwriteConfig.databaseId,
       appwriteConfig.usersCollectionId,
       userDoc.$id,
-      { dailyInvestment: amount, investmentDuration: 20 },
+      { dailyInvestment: amount, investmentDuration: 20, balance: newBalance },
     );
 
     return updatedDoc as UserDocument;
@@ -235,5 +240,125 @@ export const logout = async () => {
     (await cookies()).delete('appwrite-session'); // Clear session cookie
   } catch (error) {
     handleError(error, 'Error logging out');
+  }
+};
+
+export const createWithdrawal = async ({
+  userId,
+  accountName,
+  bankName,
+  amount,
+  accountNumber,
+  email,
+}: {
+  userId: string;
+  accountName: string;
+  bankName: string;
+  amount: number;
+  email: string;
+  accountNumber: number;
+}) => {
+  try {
+    // const userExists = await getUserByEmail(email);
+    // if (userExists) {
+    //   throw new Error('User Already Exists');
+    // }
+
+    const { databases } = await createAdminClient();
+
+    // const newAccount = await account.create(
+    //   ID.unique(),
+    //   email,
+    //   password,
+    //   `${firstName} ${lastName}`,
+    // );
+    // const accountId = newAccount.$id;
+    // const referralCode = generateReferralCode();
+    const newWithdrawal = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.withdrawalCollectionId,
+      ID.unique(),
+      {
+        userId,
+        accountName,
+        bankName,
+        amount,
+        accountNumber,
+      },
+    );
+
+    return parseStringify({ newWithdrawal });
+  } catch (error) {
+    handleError(error, 'Error Creating New Account');
+  }
+};
+
+export const getWithdrawals = async (accountId: string) => {
+  try {
+    const { databases } = await createSessionClient();
+
+    const result = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.withdrawalCollectionId,
+      [Query.equal('userId', accountId)],
+    );
+    return result.documents;
+  } catch (error) {
+    console.error('Error fetching user or documents:', error);
+    return null;
+  }
+};
+
+interface TransactionDocument extends Models.Document {
+  completed: boolean;
+}
+
+export const approveWithdrawal = async (
+  userId: string,
+  withdrawalId: string,
+  amount: number,
+): Promise<TransactionDocument> => {
+  const { databases } = await createSessionClient();
+  try {
+    console.log(
+      `Updating transaction for user: ${userId} with ID: ${withdrawalId}`,
+    );
+
+    // Update the 'completed' field of the transaction document
+    const updatedDoc = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.withdrawalCollectionId,
+      withdrawalId,
+      { completed: true },
+    );
+
+    // Handle user account reduction:
+    const response = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      [Query.equal('accountId', userId)],
+    );
+    console.log(response);
+
+    if (response.documents.length === 0) {
+      throw new Error('User document not found');
+    }
+
+    const userDoc = response.documents[0] as UserDocument;
+    const newBalance = userDoc.balance - amount;
+
+    // Update the balance
+    const updatedUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.usersCollectionId,
+      userDoc.$id,
+      { balance: newBalance },
+    );
+
+    console.log('Transaction updated successfully:', updatedDoc, updatedUser);
+    return updatedDoc as TransactionDocument;
+  } catch (error) {
+    console.error('Transaction update failed:', error);
+    throw error;
   }
 };

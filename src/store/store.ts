@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { TransactionInterface, TransactionsInterface } from './transaction';
 
 export interface UserInterface {
   name: string;
@@ -37,11 +38,22 @@ export interface Transaction {
   description: string;
 }
 
+export interface AdminInterface {
+  name: string;
+  id: string;
+  email: string;
+  balance: number;
+  phoneNumber: string;
+  referralCode: string;
+  dailyInvestment: number;
+  investmentDuration: number;
+}
+
 type AdminStore = {
-  admins: AdminData[];
-  transactions: Transaction[];
-  setAdmins: (admins: AdminData[] | []) => void;
-  setTransactions: (transactions: Transaction[] | []) => void;
+  admins: AdminInterface[] | [];
+  transactions: TransactionInterface[] | [];
+  setAdmins: (admins: AdminInterface[] | []) => void;
+  setTransactions: (transactions: TransactionInterface[] | []) => void;
 };
 
 export const useAdminStore = create<AdminStore>((set) => ({

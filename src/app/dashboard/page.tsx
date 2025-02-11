@@ -206,9 +206,11 @@ const DashboardHome = () => {
           </Button>
         </Link>
 
-        <Button variant="outline" className="h-20">
-          <FaArrowUp className="mr-2" /> Withdraw
-        </Button>
+        <Link href={'/dashboard/withdraw'} className="w-full">
+          <Button variant="outline" className="h-20 w-full">
+            <FaArrowUp className="mr-2" /> Withdraw
+          </Button>
+        </Link>
       </div>
 
       <Card>

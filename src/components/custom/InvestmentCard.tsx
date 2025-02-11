@@ -29,7 +29,7 @@ const InvestmentCard: React.FC<InvestmentCardProp> = ({ pkg, index }) => {
       router.push('/dashboard/deposit');
       return false;
     }
-    const response = await investment(id, pkg.dailyIncome);
+    const response = await investment(id, pkg.dailyIncome, pkg.price);
     console.log(response);
     toast.success(`Investment plan is ${pkg.price} for ${pkg.name}`);
   };

@@ -115,7 +115,7 @@ export const listTransactions = async () => {
     const { databases } = await createAdminClient();
     const users = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.transactionsCollectionId,
+      appwriteConfig.withdrawalCollectionId,
     );
     console.log(users.documents);
     return users.documents;
