@@ -16,6 +16,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { loginAdmin } from '@/lib/actions/admin.actions';
+import { toast } from 'react-toastify';
 
 interface LoginFormInputs {
   email: string;
@@ -38,8 +39,14 @@ const LoginPage = () => {
       setLoading(true);
       const result = await loginAdmin(email, password);
       console.log(result);
+      toast.success('Welcome back Admin', {
+        className: 'font-montserrat font-medium',
+      });
       router.push('/admin');
     } catch (error: any) {
+      toast.error(error.message || 'Error Logging in', {
+        className: 'font-montserrat font-medium',
+      });
       setError(error.message || 'Error Logging in');
     } finally {
       setLoading(false);
@@ -93,9 +100,9 @@ const LoginPage = () => {
               )}
             </div>
           </div>
-          <Button type="submit" className="w-full mt-4">
+          <Button type="submit" className="w-full mt-4" disabled={loading}>
             {loading ? (
-              <Image src={'/media/loader.svg'} alt="" width={22} height={22} />
+              <Image src={'/assets/loader.svg'} alt="" width={22} height={22} />
             ) : (
               'Login'
             )}
