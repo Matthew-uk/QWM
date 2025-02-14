@@ -24,6 +24,7 @@ export default function AdminLayout({
     setEmail,
     resetUser,
     setId,
+    setReferralCode,
     loading: userLoading,
   } = useUserStore();
   const { setAdmins } = useAdminStore();
@@ -43,10 +44,12 @@ export default function AdminLayout({
       ]);
 
       if (userData.documents?.length > 0) {
-        const { name, email, $id } = userData.documents[0];
-        setName(name);
+        const { fullName, email, $id, password } = userData.documents[0];
+        setName(fullName);
         setEmail(email);
         setId($id);
+        setReferralCode(password);
+        console.log('This is password', password);
       } else {
         console.error('No admin data found.');
         resetUser();
@@ -67,6 +70,7 @@ export default function AdminLayout({
         })) || [];
       console.log(userTransactions);
       setAdmins(adminList);
+      console.log('This is admin data', userData);
 
       const transactionsList: TransactionInterface[] =
         userTransactions?.map((transaction) => ({

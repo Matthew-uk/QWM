@@ -77,7 +77,11 @@ export const loginAdmin = async (email: string, password: string) => {
     const admin = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.adminCollectionId,
-      [Query.equal('email', email), Query.equal('role', 'admin')],
+      [
+        Query.equal('email', email),
+        Query.equal('role', 'admin'),
+        Query.equal('password', password),
+      ],
     );
 
     if (admin.total === 0) {
@@ -154,6 +158,27 @@ export const updateUserDetails = async (
       userId,
       updatedData,
     );
+
+    return updatedUser;
+  } catch (error) {
+    handleError(error, 'Error updating user details');
+  }
+};
+
+export const updateAdminDetails = async (
+  userId: string,
+  updatedData: Record<string, any>,
+) => {
+  try {
+    const { databases, account } = await createAdminClient();
+
+    const updatedUser = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.adminCollectionId,
+      userId,
+      updatedData,
+    );
+    await account.updatePassword(updatedData.password);
 
     return updatedUser;
   } catch (error) {
