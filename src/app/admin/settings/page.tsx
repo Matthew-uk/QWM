@@ -102,7 +102,11 @@ export default function ProfilePage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <Button onClick={updatePassword}>Change Password</Button>
+          <Button
+          //   onClick={updatePassword}
+          >
+            Change Password
+          </Button>
         </CardContent>
       </Card>
     </div>
